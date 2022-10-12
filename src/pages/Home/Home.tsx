@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
 import { People } from '@/data';
 import { Person } from '@/models';
+import { addFavorite } from '@/redux/states';
 import { Checkbox } from '@mui/material';
+import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 export interface HomeInterface { }
 
@@ -10,12 +12,15 @@ const Home: React.FC<HomeInterface> = () => {
 
 	const [selectedPeople, setSelectedPeople] = useState<Person[]>([]);
 	const pageSize: number = 5;
+	const dispatch = useDispatch();
 
 	const findPerson = (person: Person) => !!selectedPeople.find(p => p.id === person.id);
 	const filterPerson = (person: Person) => selectedPeople.filter(p => p.id !== person.id);
 
 	const handleChange = (person: Person) => {
-		setSelectedPeople(findPerson(person) ? filterPerson(person) : [...selectedPeople, person]);
+		const filteredPeople = findPerson(person) ? filterPerson(person) : [...selectedPeople, person];
+		dispatch(addFavorite(filteredPeople));
+		setSelectedPeople(filteredPeople);
 	};
 
 	const columns = [
@@ -28,8 +33,8 @@ const Home: React.FC<HomeInterface> = () => {
 			renderCell: (params: GridRenderCellParams) => <>{
 				<Checkbox 
 					size='small' 
-					checked={findPerson(params.row)}
-					onChange={() => handleChange(params.row)}
+					checked={ findPerson(params.row) }
+					onChange={ () => handleChange(params.row) }
 				/>
 			}</>
 		},
@@ -38,21 +43,21 @@ const Home: React.FC<HomeInterface> = () => {
 			headerName: 'Name',
 			flex: 1,
 			minWidth: 150,
-			renderCell: (params: GridRenderCellParams) => <>{params.value}</>
+			renderCell: (params: GridRenderCellParams) => <>{ params.value }</>
 		},
 		{
 			field: 'category',
 			headerName: 'Category',
 			flex: 1,
 			minWidth: 150,
-			renderCell: (params: GridRenderCellParams) => <>{params.value}</>
+			renderCell: (params: GridRenderCellParams) => <>{ params.value }</>
 		},
 		{
 			field: 'company',
 			headerName: 'Company',
 			flex: 1,
 			minWidth: 150,
-			renderCell: (params: GridRenderCellParams) => <>{params.value}</>
+			renderCell: (params: GridRenderCellParams) => <>{ params.value }</>
 		}
 	];
 
