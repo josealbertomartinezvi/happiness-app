@@ -1,9 +1,10 @@
 import { People } from '@/data';
 import { Person } from '@/models';
-import { addFavorite } from '@/redux/states';
+import { addFavorite, addPeople } from '@/redux/states';
+import store from '@/redux/store';
 import { Checkbox } from '@mui/material';
 import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 export interface HomeInterface { }
@@ -60,6 +61,10 @@ const Home: React.FC<HomeInterface> = () => {
 			renderCell: (params: GridRenderCellParams) => <>{ params.value }</>
 		}
 	];
+	
+	useEffect(() => {
+	  dispatch(addPeople(People))
+	}, []);
 
 	return (
 		<DataGrid
@@ -68,7 +73,7 @@ const Home: React.FC<HomeInterface> = () => {
 			disableSelectionOnClick
 			autoHeight
 			pageSize={pageSize}
-			rows={People}
+			rows={store.getState().people}
 			rowsPerPageOptions={[pageSize]}
 			getRowId={(row: Person) => row.id}
 		/>
