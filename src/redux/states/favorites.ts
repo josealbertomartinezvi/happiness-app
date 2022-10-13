@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: Person[] = [];
 
-export const favoritesSlice = createSlice({
+const favoritesSlice = createSlice({
     name: 'favorites',
     initialState: getLocalStorage(LocalStorageType.FAVOTITES)
         ? JSON.parse(getLocalStorage(LocalStorageType.FAVOTITES) as string) 
@@ -18,3 +18,4 @@ export const favoritesSlice = createSlice({
 });
 
 export const { addFavorite } = favoritesSlice.actions;
+export default favoritesSlice.reducer;

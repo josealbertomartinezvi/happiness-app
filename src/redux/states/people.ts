@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: Person[] = [];
 
-export const peopleSlice = createSlice({
+const peopleSlice = createSlice({
     name: 'people',
     initialState: getLocalStorage(LocalStorageType.PEOPLE)
         ? JSON.parse(getLocalStorage(LocalStorageType.PEOPLE) as string)
@@ -18,3 +18,4 @@ export const peopleSlice = createSlice({
 });
 
 export const { addPeople } = peopleSlice.actions;
+export default peopleSlice.reducer;
