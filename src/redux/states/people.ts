@@ -11,7 +11,7 @@ const peopleSlice = createSlice({
         : initialState,
     reducers: {
         addPeople: (state, action) => {
-            setLocalStorage(LocalStorageType.PEOPLE, state);
+            setLocalStorage(LocalStorageType.PEOPLE, action.payload);
             return action.payload;
         },
     }
